@@ -1,0 +1,1 @@
+g++ -std=c++14 ./mars.cpp ./PostCal.cpp Util.cpp -o MARS_Linux.o -w -Wall -g -I ./ -I ./armadillo/include/ -DARMA_DONT_USE_WRAPPER -llapack -lblas -lgslcblas -lgsl
