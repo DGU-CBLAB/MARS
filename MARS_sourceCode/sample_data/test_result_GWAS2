@@ -1,0 +1,4 @@
+command :  -a=sample_data/test_output_LRT -n=sample_data/test_NULL2_output_LRT -o=sample_data/test_result_GWAS2 -f=1 -u=5e-6 
+
+LRT_pvalue	univariate_pvalue	threshold_pvalue	threshold_UNI	significance_LRT	significance_UNI
+0.1348218 	 0.461465 	 0.1854009 	 5e-06 	 TRUE 	 FALSE 

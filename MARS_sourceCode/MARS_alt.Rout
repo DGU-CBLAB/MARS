@@ -1,0 +1,61 @@
+
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> rm(list=ls())
+> library(mvtnorm)
+> args=(commandArgs(TRUE))
+> if(length(args)<4){
++     print("Usage: R CMD BATCH '--args -g=genotypePath -s=statPath -o=output_genotype -u=output_stat [-t=topNum(default:50)]' MARS_alt.R")
++     quit();
++ }
+> topNum = 50
+> for(i in c(1:length(args))){
++         param = strsplit(args[[i]], "=")
++         option = param[[1]][1];
++         value = param[[1]][2];
++ 	if(option=="-g") {
++                 genotypePath = value
++         }else if(option=="-s"){
++                 statPath = value
++         }else if(option=="-o"){
++                 outputPath_geno = value
++         }else if(option=="-u"){
++                 outputPath_stat = value
++ 	}else if(option=="-t"){
++                 topNum = value
++         }else{
++                 print("Usage: R CMD BATCH '--args -g=genotypePath -s=statPath -o=output_genotype -u=output_stat [topNum(default:50)]' MARS_alt.R")
++                 quit()
++         }
++ }
+> 
+> x = as.matrix(read.table(genotypePath));
+> S = as.matrix(read.table(statPath));
+> 
+> I=(order(abs(S), decreasing=TRUE))[1:topNum]
+> write.table(t(S[I]),outputPath_stat, row.names=FALSE, col.names=FALSE, quote=FALSE)
+> write.table(x[I,],outputPath_geno, row.names=FALSE, col.names=FALSE, quote=FALSE)
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  2.581   0.179   2.733 

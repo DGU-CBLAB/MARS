@@ -1,0 +1,55 @@
+
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> rm(list=ls())
+> args=(commandArgs(TRUE))
+> if(length(args)<3){
++ 	print("Usage: R CMD BATCH '--args -a=LRT_data -n=LRT_null -o=output [-t=threshold(default:0.05)] computePvalue.R")
++ 	exit()
++ }
+> pThreshold = 0.05
+> for(i in c(1:length(args))){
++         param = strsplit(args[[i]], "=")
++         option = param[[1]][1]
++         value = param[[1]][2]
++         if(option=="-a") {
++         	altPath = value
++ 	}else if(option=="-n"){
++ 		nullPath = value
++ 	}else if(option=="-o"){
++ 		outPath = value
++         }else if(option=="-t"){
++ 		pThreshold = as.double(value)
++ 	}else{
++ 		print("Usage: R CMD BATCH '--args -a=LRT_data -n=LRT_null -o=output [-t=threshold(default:0.05)] computePvalue.R")
++ 	        exit()
++ 	}
++ }
+> sink(paste(outPath))
+> cat("command: ",args,"\n\n")
+> cat("pvalue_LRT\tpvalue_UNI\tpThreshold\tsignificance_LRT\tsignificance_UNI\n")
+> null = as.matrix(read.table(nullPath))
+Error in file(file, "rt") : cannot open the connection
+Calls: as.matrix -> read.table -> file
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'sample_data/test_NULL_Output_LRT': No such file or directory
+Execution halted

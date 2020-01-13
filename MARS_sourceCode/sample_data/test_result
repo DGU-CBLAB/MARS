@@ -1,0 +1,3 @@
+command:  -a=sample_data/test_output_LRT -n=sample_data/test_NULL_Output_LRT -o=sample_data/test_result -t=0.02797203 
+
+pvalue_LRT	pvalue_UNI	pThreshold	significance_LRT	significance_UNI
