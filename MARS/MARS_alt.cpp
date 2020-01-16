@@ -10,7 +10,6 @@ namespace po = boost::program_options;
 template <typename T>
 std::vector<int> sort_indexes(const std::vector<T> &v)
 {
-
     // initialize original index locations
     std::vector<int> idx(v.size());
     iota(idx.begin(), idx.end(), 0);

@@ -29,7 +29,7 @@ for(i in c(1:length(args))){
 top50<-function(fS,fR, topNum){
          I50=(order(abs(fS), decreasing=TRUE))[1:topNum]
          S50=fS[I50]
-         fR=c(rbind(S50,(I50-1)))
+         fR=c(rbind(S50,(I50-1))) # index start from 0
          return(fR)
 }
 
