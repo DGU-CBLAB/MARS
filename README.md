@@ -23,3 +23,10 @@ bootstrap.sh
 ```
 g++ -std=c++14 ./mars.cpp ./PostCal.cpp Util.cpp -o MARS_Linux.o -w -Wall -g -I ./ -I ./armadillo/include/ -DARMA_DONT_USE_WRAPPER -llapack -lblas -lgslcblas -lgsl
 ```
+
+## Test MARS
+
+MARS_alt.o
+```
+./MARS_alt.o --g sample_data/test_GENO --s sample_data/test_STAT --o sample_data/test_GENO50 --u sample_data/test_STAT50 --t 50
+```

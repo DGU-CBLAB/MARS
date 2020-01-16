@@ -88,11 +88,10 @@ int main(int argc, char* argv[]){
             out_geno << x.at(indices.at(i)) << std::endl;
         }
         out_geno.close();
-
     }catch(std::exception& e){
         std::cout << e.what() << std::endl;
         exit(-1);
     }
     std::cout << "MARS_alt Complete! : " << output_genotype <<", " << output_stat<<std::endl;
-    return 1;
+    return 0;
 }
