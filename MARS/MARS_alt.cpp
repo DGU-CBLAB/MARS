@@ -3,6 +3,7 @@
 #include<numeric>
 #include<vector>
 #include<algorithm>
+#include<string>
 #include<boost/program_options.hpp>
 
 namespace po = boost::program_options;
@@ -19,7 +20,7 @@ std::vector<int> sort_indexes(const std::vector<T> &v)
     // to avoid unnecessary index re-orderings
     // when v contains elements of equal values
     stable_sort(idx.begin(), idx.end(),
-                [&v](size_t i1, size_t i2) { return v[i1] < v[i2]; });
+                [&v](size_t i1, size_t i2) { return v[i1] > v[i2]; });
 
     return idx;
 }
@@ -37,6 +38,7 @@ int main(int argc, char* argv[]){
     po::store(po::parse_command_line(argc, argv, desc), vm);
 
     std::string genotypePath, statPath, output_genotype, output_stat;
+    genotypePath = statPath = output_genotype = output_stat = "";
     int topNum = 50;
 
     if(vm.count("help")){
@@ -48,41 +50,49 @@ int main(int argc, char* argv[]){
     if(vm.count("s")) statPath = vm["s"].as<std::string>();
     if(vm.count("o")) output_genotype = vm["o"].as<std::string>();
     if(vm.count("u")) output_stat = vm["u"].as<std::string>();
-
+    if(genotypePath == "" || statPath == "" || output_genotype == ""
+    || output_stat == ""){
+        std::cout << "Please provide all the files" <<std::endl;
+        std::cout << desc << std::endl;
+    }
     try{
         std::ifstream stat_file(statPath);
         std::ifstream geno_file(genotypePath);
         std::string str;
-        std::vector<double> S;
+        std::vector<float> S;
         std::vector<std::string> x;
+        
+        float tmp;
         while(std::getline(stat_file,str)){
-            S.push_back(abs(stoi(str)));
+            tmp = std::stof(str);
+            if(tmp < 0.0) tmp = -tmp;
+            std::cout<<str <<std::endl;
+            S.push_back(tmp);
         }stat_file.close();
         while(std::getline(geno_file,str)){
-            x.push_back(str+"\n");
+            x.push_back(str);
         }geno_file.close();
 
         // sort(S.begin(), S.end(), std::greater<>());
-        std::vector<int> indices = sort_indexes<double>(S);
+        std::vector<int> indices = sort_indexes<float>(S);
         
 
         std::ofstream out_stat(output_stat);
-        for(int i : indices){
-            out_stat.write(std::to_string(S.at(i)).c_str(),sizeof(double));
+        for(int i =0;i<topNum;i++){  
+            out_stat << std::to_string(S.at(indices.at(i))) << std::endl;
         }
-        out_stat.write("\n",sizeof(std::string));
         out_stat.close();
 
         std::ofstream out_geno(output_genotype);
-        for(int i : indices){
-            out_geno.write(x.at(i).c_str(),sizeof(std::string));
+        for(int i =0;i<topNum;i++){  
+            out_geno << x.at(indices.at(i)) << std::endl;
         }
-        out_geno.write("\n", sizeof(std::string));
         out_geno.close();
 
     }catch(std::exception& e){
         std::cout << e.what() << std::endl;
         exit(-1);
     }
+    std::cout << "MARS_alt Complete! : " << output_genotype <<", " << output_stat<<std::endl;
     return 1;
 }
